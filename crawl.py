@@ -1,29 +1,26 @@
 # -*- coding: utf-8 -*-
-from std_http import *
+from websitecrawl import websitecrawl
+from std_db import std_db
+from std_http import std_http
 from std_web import std_web
-from std_db import *
 
 
-url = "http://www.duoc.cl"
+url = "http://www.duoc.cl/englishprogram/"
 
-http = std_http()
-web = std_web()
+#http = std_http()
+#web = std_web()
 db = std_db();
-db_args = {'host':'127.0.0.1', 'user':'root', 'passwd':'websites'}
-self.db.setParams(db_args)
-self.db.connect();
-self.db.selectDb('crawl')
+db_args = {'host':'127.0.0.1', 'user':'root', 'passwd':'hello'}
+db.setParams(db_args)
+db.connect();
+db.selectDb('crawl')
+db.execute("""TRUNCATE TABLE links""");
+db.execute("""TRUNCATE TABLE anchor""");        
 
-if http.check_url(url):
-    response = http.get_page(url)
-    links = web.get_all_links(url,response[1])
-    #print links
-    for link in links:
-        print link
-        print "\t",links[link]
-        
-    #web.get_all_links(response[1])   
-    
-else:
-    print "error"
+website = websitecrawl();
+website.set_parameter('db', db);
+website.set_parameter('restrict','/englishprogram/')
+website.start_crawl(url);
+
+
 
